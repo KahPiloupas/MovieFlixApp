@@ -24,3 +24,13 @@ class SearchPresenter: SearchPresenterProtocol {
         interactor?.fetchMovies(query: query)
     }
 }
+
+extension SearchPresenter: SearchInteractorOutput {
+    func didFetchMovies(_ movies: [Movie]) {
+        router?.navigateToMovieList(from: view, with: movies)
+    }
+
+    func didFailToFetchMovies(with error: Error) {
+        view?.showError(message: "Erro ao buscar filmes.")
+    }
+}
