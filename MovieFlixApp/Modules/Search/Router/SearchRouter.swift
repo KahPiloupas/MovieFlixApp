@@ -9,6 +9,7 @@ import UIKit
 
 protocol SearchRouterProtocol {
     static func createModule() -> UIViewController
+    func navigateToMovieList(from view: SearchViewProtocol?, with movies: [Movie])
 }
 
 class SearchRouter: SearchRouterProtocol {
@@ -24,5 +25,12 @@ class SearchRouter: SearchRouterProtocol {
         presenter.router = router
         
         return view
+    }
+    
+    func navigateToMovieList(from view: SearchViewProtocol?, with movies: [Movie]) {
+        let movieListViewController = MovieListRouter.createModule(with: movies)
+        if let viewController = view as? UIViewController {
+            viewController.navigationController?.pushViewController(movieListViewController, animated: true)
+        }
     }
 }
