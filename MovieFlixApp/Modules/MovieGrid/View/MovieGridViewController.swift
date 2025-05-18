@@ -33,8 +33,6 @@ class MovieGridViewController: UIViewController {
     
     private var isNearBottomOfScroll: Bool = false
     
-    // MARK: - Initialization
-    
     init() {
         let layout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -44,8 +42,6 @@ class MovieGridViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,16 +72,14 @@ class MovieGridViewController: UIViewController {
         }
     }
     
-    // MARK: - UI Setup
-    
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Filmes"
+        title = "Films"
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Buscar filme..."
+        searchController.searchBar.placeholder = "Search Film..."
         
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -94,7 +88,7 @@ class MovieGridViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
-        emptyStateLabel.text = "Nenhum filme encontrado"
+        emptyStateLabel.text = "No movies found."
         emptyStateLabel.textAlignment = .center
         emptyStateLabel.textColor = .darkGray
         emptyStateLabel.font = .systemFont(ofSize: 18)
@@ -142,9 +136,6 @@ class MovieGridViewController: UIViewController {
         loadingFooter.translatesAutoresizingMaskIntoConstraints = false
     }
     
-
-    
-    // MARK: - Infinite Scroll
     
     private func checkIfNearBottomOfScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
@@ -189,15 +180,11 @@ class MovieGridViewController: UIViewController {
         }
     }
     
-    // MARK: - Movie Filtering
-    
     private func updateUI() {
         emptyStateLabel.isHidden = !filteredMovies.isEmpty
         collectionView.isHidden = filteredMovies.isEmpty
         collectionView.reloadData()
     }
-    
-    // MARK: - Display Movies
     
     func showLoading(_ isLoading: Bool) {
         if isLoading {
@@ -210,7 +197,6 @@ class MovieGridViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension MovieGridViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredMovies.count
@@ -224,12 +210,10 @@ extension MovieGridViewController: UICollectionViewDataSource, UICollectionViewD
         let movie = filteredMovies[indexPath.item]
         cell.configure(with: movie)
         
-        // Set up favorite action
         cell.favoriteAction = { [weak self] in
-            // Navigate to favorites screen instead of toggling favorite status
             if let navigationController = self?.navigationController {
-                let favoritesVC = FavoritesRouter.createModule()
-                navigationController.pushViewController(favoritesVC, animated: true)
+                let favoritesiewController = FavoritesRouter.createModule()
+                navigationController.pushViewController(favoritesiewController, animated: true)
             }
         }
         
@@ -252,16 +236,14 @@ extension MovieGridViewController: UICollectionViewDataSource, UICollectionViewD
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
 extension MovieGridViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
         let cellWidth = (width - spacing * (columns + 1)) / columns
-        return CGSize(width: cellWidth, height: cellWidth * 1.5) // 3:2 aspect ratio
+        return CGSize(width: cellWidth, height: cellWidth * 1.5)
     }
 }
 
-// MARK: - UISearchResultsUpdating
 extension MovieGridViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard searchController.searchBar.text != nil else { return }
@@ -280,7 +262,6 @@ extension MovieGridViewController: UISearchResultsUpdating {
     }
 }
 
-// MARK: - MovieGridViewProtocol
 extension MovieGridViewController: MovieGridViewProtocol {
     func displayMovies(_ movies: [Movie]) {
         self.allMovies = movies
@@ -330,7 +311,7 @@ extension MovieGridViewController: MovieGridViewProtocol {
             self.showLoading(false)
             self.showLoadingFooter(false)
             
-            let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert, animated: true)
         }
@@ -343,4 +324,3 @@ extension MovieGridViewController: MovieGridViewProtocol {
         }
     }
 }
-

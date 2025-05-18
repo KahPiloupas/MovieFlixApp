@@ -81,7 +81,7 @@ class MovieCell: UITableViewCell {
         if movie.voteAverage > 0 {
             ratingLabel.text = "⭐️ \(movie.voteAverage)"
         } else {
-            ratingLabel.text = "Sem avaliação"
+            ratingLabel.text = "No review."
         }
         
         if let posterPath = movie.posterPath {

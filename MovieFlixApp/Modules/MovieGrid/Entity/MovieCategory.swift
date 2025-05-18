@@ -8,9 +8,9 @@
 import Foundation
 
 enum MovieCategory: String, CaseIterable {
-    case all = "Todos os Filmes"
-    case nowPlaying = "Em Cartaz"
-    case popular = "Populares"
-    case topRated = "Mais Bem Avaliados"
-    case upcoming = "Próximos Lançamentos"
+    case all = "All Movies"
+    case nowPlaying = "On display"
+    case popular = "Popular"
+    case topRated = "Top Rated"
+    case upcoming = "Upcoming Releases"
 }

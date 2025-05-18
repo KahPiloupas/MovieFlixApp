@@ -21,10 +21,7 @@ class MovieGridCell: UICollectionViewCell {
     private var imageUrlString: String?
     private var currentMovieId: Int = 0
     
-    // Add callback for favorite action
     var favoriteAction: (() -> Void)?
-    
-    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,8 +31,6 @@ class MovieGridCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI Setup
     
     private func setupLayout() {
         contentView.backgroundColor = .white
@@ -74,7 +69,6 @@ class MovieGridCell: UICollectionViewCell {
         favoriteIndicator.translatesAutoresizingMaskIntoConstraints = false
         favoriteIndicator.isUserInteractionEnabled = true
         
-        // Add tap gesture to favorite indicator
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(favoriteIconTapped))
         favoriteIndicator.addGestureRecognizer(tapGesture)
         
@@ -112,16 +106,11 @@ class MovieGridCell: UICollectionViewCell {
         ])
     }
     
-    // MARK: - Actions
-    
     @objc private func favoriteIconTapped() {
         favoriteAction?()
     }
     
-    // MARK: - Configuration
-    
     func configure(with movie: Movie) {
-        // Store movie ID to check for correctness later
         currentMovieId = movie.id
         
         titleLabel.text = movie.originalTitle
@@ -133,7 +122,6 @@ class MovieGridCell: UICollectionViewCell {
             ratingView.isHidden = true
         }
         
-        // Set a placeholder immediately to avoid showing the previous movie's image
         setPlaceholderImage()
         
         if let posterPath = movie.posterPath {
@@ -147,27 +135,20 @@ class MovieGridCell: UICollectionViewCell {
         let baseURL = "https://image.tmdb.org/t/p/w342"
         let fullURL = baseURL + path
         
-        // If the URL is already being loaded for this cell, don't reload it
         if imageUrlString == fullURL { return }
         
-        // Cancel any existing image loading task
         cancelImageLoading()
         
-        // Store the URL we're loading
         imageUrlString = fullURL
         
-        // Check if the image is already in cache
         if let cachedImage = ImageCache.shared.getImageFromCache(urlString: fullURL) {
-            // Use cached image immediately, avoiding any placeholder flashing
             posterImageView.image = cachedImage
             posterImageView.contentMode = .scaleAspectFill
             posterImageView.tintColor = nil
             return
         }
         
-        // Load the image asynchronously
         imageTask = ImageCache.shared.loadImage(from: fullURL) { [weak self] image in
-            // Make sure we're still showing the same movie
             guard let self = self, 
                   self.currentMovieId == movieId,
                   self.imageUrlString == fullURL else { 
@@ -175,7 +156,6 @@ class MovieGridCell: UICollectionViewCell {
             }
             
             if let image = image {
-                // Avoid UI flashing by not setting placeholder again
                 self.posterImageView.image = image
                 self.posterImageView.contentMode = .scaleAspectFill
                 self.posterImageView.tintColor = nil
@@ -205,7 +185,6 @@ class MovieGridCell: UICollectionViewCell {
         favoriteAction = nil
         currentMovieId = 0
         
-        // Set a plain background color instead of placeholder image to avoid flashing
         posterImageView.image = nil
         posterImageView.backgroundColor = .lightGray
         

@@ -38,7 +38,7 @@ extension MovieDetailPresenter: MovieDetailInteractorOutput {
     }
     
     func didFailToFetchDetail(with error: Error) {
-        view?.displayError("Erro ao carregar detalhes.")
+        view?.displayError("Error loading details.")
     }
     
     func didUpdateFavoriteStatus(_ movie: MovieDetail, isFavorite: Bool) {

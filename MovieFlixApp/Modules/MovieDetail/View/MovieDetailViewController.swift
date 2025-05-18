@@ -14,7 +14,6 @@ protocol MovieDetailViewProtocol: AnyObject {
 
 class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     
-    // MARK: - Properties
     var presenter: MovieDetailPresenterProtocol!
     private var currentMovie: MovieDetail?
     
@@ -23,7 +22,6 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     private var posterUrlString: String?
     private var backdropUrlString: String?
     
-    // MARK: - UI Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -47,7 +45,6 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     
     private let plotLabel = UILabel()
     
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -59,10 +56,9 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
         cancelImageLoadingTasks()
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Detalhes do Filme"
+        title = "Movie Details"
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -185,35 +181,35 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
         infoContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
         infoContainerView.layer.shadowRadius = 4
         
-        budgetTitleLabel.text = "Custo de Produção:"
+        budgetTitleLabel.text = "Budget:"
         budgetTitleLabel.font = .boldSystemFont(ofSize: 16)
         budgetTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        budgetValueLabel.text = "Carregando..."
+        budgetValueLabel.text = "Loading..."
         budgetValueLabel.font = .systemFont(ofSize: 16)
         budgetValueLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        releaseTitleLabel.text = "Data de lançamento:"
+        releaseTitleLabel.text = "Release Date:"
         releaseTitleLabel.font = .boldSystemFont(ofSize: 16)
         releaseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        releaseValueLabel.text = "Carregando..."
+        releaseValueLabel.text = "Loading..."
         releaseValueLabel.font = .systemFont(ofSize: 16)
         releaseValueLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        revenueTitleLabel.text = "Valor arrecadado:"
+        revenueTitleLabel.text = "Revenue:"
         revenueTitleLabel.font = .boldSystemFont(ofSize: 16)
         revenueTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        revenueValueLabel.text = "Carregando..."
+        revenueValueLabel.text = "Loading..."
         revenueValueLabel.font = .systemFont(ofSize: 16)
         revenueValueLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        genresTitleLabel.text = "Gêneros:"
+        genresTitleLabel.text = "Genres:"
         genresTitleLabel.font = .boldSystemFont(ofSize: 16)
         genresTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        genresValueLabel.text = "Carregando..."
+        genresValueLabel.text = "Loading..."
         genresValueLabel.font = .systemFont(ofSize: 16)
         genresValueLabel.numberOfLines = 0
         genresValueLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -284,8 +280,6 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
         ])
     }
     
-    // MARK: - Actions
-    
     @objc private func toggleFavorite() {
         guard let movie = currentMovie else { return }
         presenter.toggleFavorite(movie)
@@ -297,8 +291,6 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     }
     
     @objc private func showMoreOptions() {}
-    
-    // MARK: - Helper Methods
     
     private func loadPosterImage(path: String?) {
         guard let path = path else {
@@ -428,7 +420,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     }
     
     private func formatCurrency(_ value: Int) -> String {
-        guard value > 0 else { return "Não disponível" }
+        guard value > 0 else { return "Not available" }
         
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -436,8 +428,6 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
         formatter.maximumFractionDigits = 0
         return formatter.string(from: NSNumber(value: value)) ?? "$\(value)"
     }
-    
-    // MARK: - MovieDetailViewProtocol
     
     func displayMovieDetail(_ detail: MovieDetail) {
         currentMovie = detail
@@ -453,7 +443,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
             let genreNames = detail.genres.map { $0.name }.joined(separator: ", ")
             genresValueLabel.text = genreNames
         } else {
-            genresValueLabel.text = "Não disponível"
+            genresValueLabel.text = "Not available"
         }
         
         let isFavorite = FavoritesManager.shared.isFavorite(id: detail.id)
@@ -466,7 +456,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     }
     
     func displayError(_ message: String) {
-        let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }

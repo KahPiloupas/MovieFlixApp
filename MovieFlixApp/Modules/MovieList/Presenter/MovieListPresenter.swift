@@ -19,12 +19,10 @@ class MovieListPresenter: MovieListPresenterProtocol {
     var router: MovieListRouterProtocol?
     var movies: [Movie]
     
-    // MARK: - Initialization
     init(movies: [Movie]) {
         self.movies = movies
     }
     
-    // MARK: - LifeCycle
     func viewDidLoad() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

@@ -64,7 +64,6 @@ class MovieGridPresenter: MovieGridPresenterProtocol {
     
     func searchMovies(query: String) {
         if query.isEmpty {
-            // If search is cleared, go back to showing current category
             isSearching = false
             fetchMovieCategoryWithPage(currentCategory, page: 1)
             return
@@ -86,7 +85,6 @@ class MovieGridPresenter: MovieGridPresenterProtocol {
                     favoritesManager.addToFavorites(movieDetail)
                 }
             case .failure:
-                // Handle error if needed
                 break
             }
         })

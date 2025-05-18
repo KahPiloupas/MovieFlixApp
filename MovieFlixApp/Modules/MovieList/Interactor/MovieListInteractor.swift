@@ -7,8 +7,6 @@
 
 import Foundation
 
-protocol MovieListInteractorProtocol {
-}
+protocol MovieListInteractorProtocol {}
 
-class MovieListInteractor: MovieListInteractorProtocol {
-}
+class MovieListInteractor: MovieListInteractorProtocol {}

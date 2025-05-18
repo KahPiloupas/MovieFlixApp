@@ -19,17 +19,15 @@ class MovieListViewController: UIViewController {
     private let tableView = UITableView()
     private let emptyStateLabel = UILabel()
     
-    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         presenter.viewDidLoad()
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Resultados"
+        title = "Results"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -38,7 +36,7 @@ class MovieListViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.rowHeight = 100
         
-        emptyStateLabel.text = "Nenhum filme encontrado"
+        emptyStateLabel.text = "No movies found."
         emptyStateLabel.textAlignment = .center
         emptyStateLabel.textColor = .darkGray
         emptyStateLabel.font = .systemFont(ofSize: 18)

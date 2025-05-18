@@ -22,37 +22,35 @@ class SearchViewController: UIViewController {
     private let allMoviesButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Buscar Filme"
+        title = "Search Film"
         
         logoImageView.image = UIImage(systemName: "film")
         logoImageView.tintColor = .systemBlue
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        searchTextField.placeholder = "Digite o nome do filme"
+        searchTextField.placeholder = "Enter the name of the movie"
         searchTextField.borderStyle = .roundedRect
         searchTextField.autocorrectionType = .no
         searchTextField.returnKeyType = .search
         searchTextField.delegate = self
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        searchButton.setTitle("Buscar", for: .normal)
+        searchButton.setTitle("Search", for: .normal)
         searchButton.backgroundColor = .systemBlue
         searchButton.setTitleColor(.white, for: .normal)
         searchButton.layer.cornerRadius = 8
         searchButton.addTarget(self, action: #selector(didTapSearch), for: .touchUpInside)
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         
-        allMoviesButton.setTitle("Ver Todos os Filmes", for: .normal)
+        allMoviesButton.setTitle("See All Movies", for: .normal)
         allMoviesButton.backgroundColor = .systemGreen
         allMoviesButton.setTitleColor(.white, for: .normal)
         allMoviesButton.layer.cornerRadius = 8
@@ -96,7 +94,7 @@ class SearchViewController: UIViewController {
     
     @objc private func didTapSearch() {
         guard let query = searchTextField.text, !query.isEmpty else {
-            showError(message: "Digite um nome válido.")
+            showError(message: "Enter a valid name.")
             return
         }
         
@@ -118,7 +116,7 @@ extension SearchViewController: UITextFieldDelegate {
 
 extension SearchViewController: SearchViewProtocol {
     func showError(message: String) {
-        let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
