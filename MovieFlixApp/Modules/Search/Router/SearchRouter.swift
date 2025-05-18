@@ -10,6 +10,7 @@ import UIKit
 protocol SearchRouterProtocol {
     static func createModule() -> UIViewController
     func navigateToMovieList(from view: SearchViewProtocol?, with movies: [Movie])
+    func navigateToMovieGrid(from view: SearchViewProtocol?)
 }
 
 class SearchRouter: SearchRouterProtocol {
@@ -31,6 +32,13 @@ class SearchRouter: SearchRouterProtocol {
         let movieListViewController = MovieListRouter.createModule(with: movies)
         if let viewController = view as? UIViewController {
             viewController.navigationController?.pushViewController(movieListViewController, animated: true)
+        }
+    }
+    
+    func navigateToMovieGrid(from view: SearchViewProtocol?) {
+        let movieGridViewController = MovieGridRouter.createModule()
+        if let viewController = view as? UIViewController {
+            viewController.navigationController?.pushViewController(movieGridViewController, animated: true)
         }
     }
 }

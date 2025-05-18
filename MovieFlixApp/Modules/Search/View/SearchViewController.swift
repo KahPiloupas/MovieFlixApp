@@ -9,46 +9,110 @@ import UIKit
 
 protocol SearchViewProtocol: AnyObject {
     func showError(message: String)
+    func showLoading(_ isLoading: Bool)
 }
 
 class SearchViewController: UIViewController {
     
     var presenter: SearchPresenterProtocol!
     
+    private let logoImageView = UIImageView()
     private let searchTextField = UITextField()
     private let searchButton = UIButton(type: .system)
+    private let allMoviesButton = UIButton(type: .system)
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
+    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
         title = "Buscar Filme"
         
+        logoImageView.image = UIImage(systemName: "film")
+        logoImageView.tintColor = .systemBlue
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         searchTextField.placeholder = "Digite o nome do filme"
         searchTextField.borderStyle = .roundedRect
+        searchTextField.autocorrectionType = .no
+        searchTextField.returnKeyType = .search
+        searchTextField.delegate = self
+        searchTextField.translatesAutoresizingMaskIntoConstraints = false
         
         searchButton.setTitle("Buscar", for: .normal)
+        searchButton.backgroundColor = .systemBlue
+        searchButton.setTitleColor(.white, for: .normal)
+        searchButton.layer.cornerRadius = 8
         searchButton.addTarget(self, action: #selector(didTapSearch), for: .touchUpInside)
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let stack = UIStackView(arrangedSubviews: [searchTextField, searchButton])
-        stack.axis = .vertical
-        stack.spacing = 16
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        allMoviesButton.setTitle("Ver Todos os Filmes", for: .normal)
+        allMoviesButton.backgroundColor = .systemGreen
+        allMoviesButton.setTitleColor(.white, for: .normal)
+        allMoviesButton.layer.cornerRadius = 8
+        allMoviesButton.addTarget(self, action: #selector(didTapAllMovies), for: .touchUpInside)
+        allMoviesButton.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(stack)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(logoImageView)
+        view.addSubview(searchTextField)
+        view.addSubview(searchButton)
+        view.addSubview(allMoviesButton)
+        view.addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([
-            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            logoImageView.widthAnchor.constraint(equalToConstant: 100),
+            logoImageView.heightAnchor.constraint(equalToConstant: 100),
+            
+            searchTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
+            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            searchTextField.heightAnchor.constraint(equalToConstant: 44),
+            
+            searchButton.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
+            searchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchButton.widthAnchor.constraint(equalToConstant: 120),
+            searchButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            allMoviesButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 24),
+            allMoviesButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            allMoviesButton.widthAnchor.constraint(equalToConstant: 200),
+            allMoviesButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: allMoviesButton.bottomAnchor, constant: 24)
         ])
     }
     
     @objc private func didTapSearch() {
-        guard let query = searchTextField.text else { return }
+        guard let query = searchTextField.text, !query.isEmpty else {
+            showError(message: "Digite um nome válido.")
+            return
+        }
+        
+        searchTextField.resignFirstResponder()
         presenter.searchMovie(query: query)
+    }
+    
+    @objc private func didTapAllMovies() {
+        presenter.showAllMovies()
+    }
+}
+
+extension SearchViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        didTapSearch()
+        return true
     }
 }
 
@@ -57,5 +121,17 @@ extension SearchViewController: SearchViewProtocol {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            searchButton.isEnabled = false
+            allMoviesButton.isEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            searchButton.isEnabled = true
+            allMoviesButton.isEnabled = true
+        }
     }
 }

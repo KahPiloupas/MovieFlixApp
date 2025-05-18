@@ -17,43 +17,81 @@ class FavoritesViewController: UIViewController {
     private var movies: [MovieDetail] = []
     
     private let tableView = UITableView()
+    private let emptyStateLabel = UILabel()
     
+    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         presenter.viewDidLoad()
     }
     
+    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Favoritos"
+        title = "Filmes Favoritos"
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "FavoriteCell")
+        tableView.register(FavoriteMovieCell.self, forCellReuseIdentifier: FavoriteMovieCell.identifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 160
+        
+        emptyStateLabel.text = "Não há filmes favoritos ainda."
+        emptyStateLabel.textAlignment = .center
+        emptyStateLabel.textColor = .darkGray
+        emptyStateLabel.font = .systemFont(ofSize: 18)
+        emptyStateLabel.isHidden = true
+        emptyStateLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(tableView)
-        tableView.frame = view.bounds
+        view.addSubview(emptyStateLabel)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyStateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            emptyStateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
     }
 }
 
 extension FavoritesViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { movies.count }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return movies.count
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let movie = movies[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath)
-        cell.textLabel?.text = "\(movie.title) ⭐️ \(movie.voteAverage)"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteMovieCell.identifier, for: indexPath) as? FavoriteMovieCell else {
+            return UITableViewCell()
+        }
+        
+        let movieDetail = movies[indexPath.row]
+        cell.configure(with: movieDetail)
+        
+        cell.favoriteAction = { [weak self] in
+            self?.presenter.didTapRemove(id: movieDetail.id)
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didSelectMovie(id: movies[indexPath.row].id)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            presenter.didTapRemove(id: movies[indexPath.row].id)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        let movieId = movies[indexPath.row].id
+        presenter.didSelectMovie(id: movieId)
     }
 }
 
@@ -61,5 +99,8 @@ extension FavoritesViewController: FavoritesViewProtocol {
     func displayFavorites(_ movies: [MovieDetail]) {
         self.movies = movies
         tableView.reloadData()
+        
+        emptyStateLabel.isHidden = !movies.isEmpty
+        tableView.isHidden = movies.isEmpty
     }
 }

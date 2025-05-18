@@ -15,13 +15,13 @@ class MovieDetailRouter: MovieDetailRouterProtocol {
         let presenter = MovieDetailPresenter(movieId: movieId)
         let interactor = MovieDetailInteractor(movieId: movieId)
         let router = MovieDetailRouter()
-
+        
         view.presenter = presenter
-        presenter.view = view 
+        presenter.view = view
         presenter.interactor = interactor
         presenter.router = router
         interactor.output = presenter
-
+        
         return view
     }
 }

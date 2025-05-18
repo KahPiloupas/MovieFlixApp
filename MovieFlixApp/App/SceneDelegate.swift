@@ -18,11 +18,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let searchModule = SearchRouter.createModule()
-        let navigationController = UINavigationController(rootViewController: searchModule)
+        let movieGridViewController = MovieGridRouter.createModule()
+        let navigationController = UINavigationController(rootViewController: movieGridViewController)
+        
+        let favoritesButton = UIBarButtonItem(
+            image: UIImage(systemName: "star.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(showFavorites)
+        )
+        movieGridViewController.navigationItem.leftBarButtonItem = favoritesButton
+        
         window.rootViewController = navigationController
+        
         self.window = window
         window.makeKeyAndVisible()
+    }
+    
+    @objc func showFavorites() {
+        guard let navigationController = window?.rootViewController as? UINavigationController else { return }
+        
+        let favoritesVC = FavoritesRouter.createModule()
+        navigationController.pushViewController(favoritesVC, animated: true)
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -39,7 +56,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidEnterBackground(_ scene: UIScene) {
     }
-    
-    
 }
 

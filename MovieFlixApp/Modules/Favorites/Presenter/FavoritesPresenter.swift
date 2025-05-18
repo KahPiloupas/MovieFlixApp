@@ -18,15 +18,15 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
     weak var view: FavoritesViewProtocol?
     var interactor: FavoritesInteractorProtocol?
     var router: FavoritesRouterProtocol?
-
+    
     func viewDidLoad() {
         interactor?.getFavorites()
     }
-
+    
     func didTapRemove(id: Int) {
         interactor?.removeFavorite(id: id)
     }
-
+    
     func didSelectMovie(id: Int) {
         router?.navigateToDetail(from: view, movieId: id)
     }

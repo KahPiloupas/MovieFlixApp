@@ -29,9 +29,9 @@ class MovieListRouter: MovieListRouterProtocol {
 
 extension MovieListRouter {
     func navigateToDetail(from view: MovieListViewProtocol?, with movieId: Int) {
-        let detailVC = MovieDetailRouter.createModule(with: movieId)
+        let detailViewController = MovieDetailRouter.createModule(with: movieId)
         if let viewController = view as? UIViewController {
-            viewController.navigationController?.pushViewController(detailVC, animated: true)
+            viewController.navigationController?.pushViewController(detailViewController, animated: true)
         }
     }
 }

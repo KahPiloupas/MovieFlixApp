@@ -18,14 +18,15 @@ protocol FavoritesInteractorOutput: AnyObject {
 
 class FavoritesInteractor: FavoritesInteractorProtocol {
     weak var output: FavoritesInteractorOutput?
-
+    private let favoritesManager = FavoritesManager.shared
+    
     func getFavorites() {
-        let favorites = FavoritesManager.shared.fetchFavorites()
+        let favorites = favoritesManager.getAllFavorites()
         output?.didLoadFavorites(favorites)
     }
-
+    
     func removeFavorite(id: Int) {
-        FavoritesManager.shared.removeFavorite(id: id)
+        favoritesManager.removeFromFavorites(id: id)
         getFavorites()
     }
 }

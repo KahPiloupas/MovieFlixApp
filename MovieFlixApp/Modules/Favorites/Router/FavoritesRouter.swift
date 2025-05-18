@@ -17,16 +17,16 @@ class FavoritesRouter: FavoritesRouterProtocol {
         let presenter = FavoritesPresenter()
         let interactor = FavoritesInteractor()
         let router = FavoritesRouter()
-
+        
         view.presenter = presenter
         presenter.view = view
         presenter.interactor = interactor
         presenter.router = router
         interactor.output = presenter
-
+        
         return view
     }
-
+    
     func navigateToDetail(from view: FavoritesViewProtocol?, movieId: Int) {
         let detailViewController = MovieDetailRouter.createModule(with: movieId)
         if let vc = view as? UIViewController {
