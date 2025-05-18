@@ -12,10 +12,22 @@ class ImageCache {
     
     private let cache = NSCache<NSString, UIImage>()
     private var activeTasks: [String: URLSessionDataTask] = [:]
+    private let taskLock = NSLock()
     
     private init() {
         cache.countLimit = 100
         cache.totalCostLimit = 50 * 1024 * 1024
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(clearMemoryCache),
+            name: UIApplication.didReceiveMemoryWarningNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func clearMemoryCache() {
+        cache.removeAllObjects()
     }
     
     func getImageFromCache(urlString: String) -> UIImage? {
@@ -28,11 +40,14 @@ class ImageCache {
             return nil
         }
         
+        taskLock.lock()
         if let existingTask = activeTasks[urlString] {
+            taskLock.unlock()
             return existingTask
         }
         
         guard let url = URL(string: urlString) else {
+            taskLock.unlock()
             completion(nil)
             return nil
         }
@@ -40,11 +55,28 @@ class ImageCache {
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             defer {
                 DispatchQueue.main.async {
+                    self?.taskLock.lock()
                     self?.activeTasks.removeValue(forKey: urlString)
+                    self?.taskLock.unlock()
                 }
             }
             
-            guard let data = data, error == nil,
+            if error != nil {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               !(200...299).contains(httpResponse.statusCode) {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            
+            guard let data = data,
                   let image = UIImage(data: data) else {
                 DispatchQueue.main.async {
                     completion(nil)
@@ -60,17 +92,27 @@ class ImageCache {
         }
         
         activeTasks[urlString] = task
+        taskLock.unlock()
         task.resume()
         
         return task
     }
     
     func cancelImageLoad(for urlString: String) {
+        taskLock.lock()
         activeTasks[urlString]?.cancel()
         activeTasks.removeValue(forKey: urlString)
+        taskLock.unlock()
     }
     
     func clearCache() {
         cache.removeAllObjects()
+        
+        taskLock.lock()
+        for task in activeTasks.values {
+            task.cancel()
+        }
+        activeTasks.removeAll()
+        taskLock.unlock()
     }
-} 
+}

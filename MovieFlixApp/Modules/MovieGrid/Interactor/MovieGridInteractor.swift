@@ -15,6 +15,7 @@ protocol MovieGridInteractorProtocol {
     func fetchUpcomingMovies(page: Int)
     func fetchAllCategories(page: Int)
     func searchMovies(query: String)
+    func fetchMovieDetail(id: Int, completion: @escaping (Result<MovieDetail, Error>) -> Void)
 }
 
 protocol MovieGridInteractorOutput: AnyObject {
@@ -103,5 +104,9 @@ class MovieGridInteractor: MovieGridInteractorProtocol {
                 self?.output?.didFailToFetchMovies(with: error)
             }
         }
+    }
+    
+    func fetchMovieDetail(id: Int, completion: @escaping (Result<MovieDetail, Error>) -> Void) {
+        service.fetchMovieDetail(id: id, completion: completion)
     }
 }

@@ -31,7 +31,6 @@ class FavoriteMovieCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI Setup
     private func setupLayout() {
         selectionStyle = .none
         
@@ -43,10 +42,11 @@ class FavoriteMovieCell: UITableViewCell {
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textColor = .black
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        genreTitleLabel.text = "Gênero:"
+        genreTitleLabel.text = "Genre:"
         genreTitleLabel.font = UIFont.boldSystemFont(ofSize: 14)
         genreTitleLabel.textColor = .black
         genreTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class FavoriteMovieCell: UITableViewCell {
         genreValueLabel.numberOfLines = 0
         genreValueLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        releaseTitleLabel.text = "Data de lançamento:"
+        releaseTitleLabel.text = "Release Date:"
         releaseTitleLabel.font = UIFont.boldSystemFont(ofSize: 14)
         releaseTitleLabel.textColor = .black
         releaseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -128,26 +128,26 @@ class FavoriteMovieCell: UITableViewCell {
         ])
     }
     
-    // MARK: - Actions
-    
     @objc private func favoriteButtonTapped() {
         if let action = favoriteAction {
             action()
         }
     }
     
-    // MARK: - Configuration
-    
     var favoriteAction: (() -> Void)?
     
     func configure(with movie: MovieDetail) {
-        titleLabel.text = movie.title
+        if movie.originalTitle.count > movie.title.count {
+            titleLabel.text = movie.originalTitle
+        } else {
+            titleLabel.text = movie.title
+        }
         
         if !movie.genres.isEmpty {
             let genreNames = movie.genres.map { $0.name }.joined(separator: ", ")
             genreValueLabel.text = genreNames
         } else {
-            genreValueLabel.text = "Não disponível"
+            genreValueLabel.text = "Not available"
         }
         
         releaseValueLabel.text = formatDate(movie.releaseDate)

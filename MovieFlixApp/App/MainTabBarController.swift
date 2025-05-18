@@ -8,10 +8,10 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         super.viewDidLoad()
         setupViewControllers()
     }
@@ -20,7 +20,7 @@ class MainTabBarController: UITabBarController {
         let gridViewController = MovieGridRouter.createModule()
         let gridNavigationController = UINavigationController(rootViewController: gridViewController)
         gridNavigationController.tabBarItem = UITabBarItem(
-            title: "Filmes",
+            title: "Films",
             image: UIImage(systemName: "film"),
             tag: 0
         )
@@ -28,7 +28,7 @@ class MainTabBarController: UITabBarController {
         let favoritesViewController = FavoritesRouter.createModule()
         let favoritesNavigationController = UINavigationController(rootViewController: favoritesViewController)
         favoritesNavigationController.tabBarItem = UITabBarItem(
-            title: "Favoritos",
+            title: "Favorites",
             image: UIImage(systemName: "star.fill"),
             tag: 1
         )

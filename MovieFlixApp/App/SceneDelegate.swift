@@ -38,8 +38,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc func showFavorites() {
         guard let navigationController = window?.rootViewController as? UINavigationController else { return }
         
-        let favoritesVC = FavoritesRouter.createModule()
-        navigationController.pushViewController(favoritesVC, animated: true)
+        let favoritesViewController = FavoritesRouter.createModule()
+        navigationController.pushViewController(favoritesViewController, animated: true)
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -57,4 +57,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
     }
 }
-

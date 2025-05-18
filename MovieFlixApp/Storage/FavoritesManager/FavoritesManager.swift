@@ -9,18 +9,15 @@ import Foundation
 
 class FavoritesManager {
     
-    // MARK: - Singleton
     static let shared = FavoritesManager()
     
     private init() {
         loadFavorites()
     }
     
-    // MARK: - Properties
     private var favorites: [Int: MovieDetail] = [:]
     private let favoritesKey = "favoriteMovies"
     
-    // MARK: - Public Methods
     func addToFavorites(_ movie: MovieDetail) {
         favorites[movie.id] = movie
         saveFavorites()
@@ -52,7 +49,6 @@ class FavoritesManager {
         return Array(favorites.values)
     }
     
-    // MARK: - Private Methods
     private func saveFavorites() {
         if let encoded = try? JSONEncoder().encode(Array(favorites.values)) {
             UserDefaults.standard.set(encoded, forKey: favoritesKey)
@@ -69,7 +65,6 @@ class FavoritesManager {
     }
 }
 
-// MARK: - Notification Names
 extension Notification.Name {
     static let favoritesChanged = Notification.Name("com.movieflix.favoritesChanged")
-} 
+}

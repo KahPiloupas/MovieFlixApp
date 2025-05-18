@@ -223,6 +223,16 @@ extension MovieGridViewController: UICollectionViewDataSource, UICollectionViewD
         
         let movie = filteredMovies[indexPath.item]
         cell.configure(with: movie)
+        
+        // Set up favorite action
+        cell.favoriteAction = { [weak self] in
+            // Navigate to favorites screen instead of toggling favorite status
+            if let navigationController = self?.navigationController {
+                let favoritesVC = FavoritesRouter.createModule()
+                navigationController.pushViewController(favoritesVC, animated: true)
+            }
+        }
+        
         return cell
     }
     

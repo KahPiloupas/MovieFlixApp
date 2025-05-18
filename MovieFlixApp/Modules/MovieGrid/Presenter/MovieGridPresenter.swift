@@ -14,6 +14,7 @@ protocol MovieGridPresenterProtocol {
     func fetchMovieCategory(_ category: MovieCategory)
     func loadMoreMovies()
     func searchMovies(query: String)
+    func toggleFavorite(for movie: Movie)
     var currentCategory: MovieCategory { get }
     var isLoadingMore: Bool { get }
     var isSearching: Bool { get }
@@ -72,6 +73,23 @@ class MovieGridPresenter: MovieGridPresenterProtocol {
         isSearching = true
         view?.showLoading(true)
         interactor?.searchMovies(query: query)
+    }
+    
+    func toggleFavorite(for movie: Movie) {
+        interactor?.fetchMovieDetail(id: movie.id, completion: { [weak self] result in
+            switch result {
+            case .success(let movieDetail):
+                let favoritesManager = FavoritesManager.shared
+                if favoritesManager.isFavorite(id: movie.id) {
+                    favoritesManager.removeFromFavorites(id: movie.id)
+                } else {
+                    favoritesManager.addToFavorites(movieDetail)
+                }
+            case .failure:
+                // Handle error if needed
+                break
+            }
+        })
     }
     
     private func fetchMovieCategoryWithPage(_ category: MovieCategory, page: Int) {

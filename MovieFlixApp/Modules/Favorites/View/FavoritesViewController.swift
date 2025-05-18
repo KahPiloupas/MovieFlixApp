@@ -19,7 +19,6 @@ class FavoritesViewController: UIViewController {
     private let tableView = UITableView()
     private let emptyStateLabel = UILabel()
     
-    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -30,10 +29,9 @@ class FavoritesViewController: UIViewController {
         presenter.viewDidLoad()
     }
     
-    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
-        title = "Filmes Favoritos"
+        title = "Favorite Movies"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -42,9 +40,9 @@ class FavoritesViewController: UIViewController {
         tableView.separatorStyle = .none
         
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 160
+        tableView.estimatedRowHeight = 200
         
-        emptyStateLabel.text = "Não há filmes favoritos ainda."
+        emptyStateLabel.text = "There are no favorite movies yet."
         emptyStateLabel.textAlignment = .center
         emptyStateLabel.textColor = .darkGray
         emptyStateLabel.font = .systemFont(ofSize: 18)

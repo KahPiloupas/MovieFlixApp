@@ -19,6 +19,10 @@ class MovieGridCell: UICollectionViewCell {
     
     private var imageTask: URLSessionDataTask?
     private var imageUrlString: String?
+    private var currentMovieId: Int = 0
+    
+    // Add callback for favorite action
+    var favoriteAction: (() -> Void)?
     
     // MARK: - Initialization
     
@@ -51,7 +55,8 @@ class MovieGridCell: UICollectionViewCell {
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
         titleLabel.textColor = .darkText
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         ratingView.backgroundColor = .systemYellow
@@ -67,6 +72,11 @@ class MovieGridCell: UICollectionViewCell {
         favoriteIndicator.tintColor = .systemYellow
         favoriteIndicator.isHidden = true
         favoriteIndicator.translatesAutoresizingMaskIntoConstraints = false
+        favoriteIndicator.isUserInteractionEnabled = true
+        
+        // Add tap gesture to favorite indicator
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(favoriteIconTapped))
+        favoriteIndicator.addGestureRecognizer(tapGesture)
         
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
@@ -102,9 +112,18 @@ class MovieGridCell: UICollectionViewCell {
         ])
     }
     
+    // MARK: - Actions
+    
+    @objc private func favoriteIconTapped() {
+        favoriteAction?()
+    }
+    
     // MARK: - Configuration
     
     func configure(with movie: Movie) {
+        // Store movie ID to check for correctness later
+        currentMovieId = movie.id
+        
         titleLabel.text = movie.originalTitle
         
         if movie.voteAverage > 0 {
@@ -114,40 +133,52 @@ class MovieGridCell: UICollectionViewCell {
             ratingView.isHidden = true
         }
         
+        // Set a placeholder immediately to avoid showing the previous movie's image
+        setPlaceholderImage()
+        
         if let posterPath = movie.posterPath {
-            loadImage(path: posterPath)
-        } else {
-            setPlaceholderImage()
+            loadImage(path: posterPath, for: movie.id)
         }
         
         favoriteIndicator.isHidden = !FavoritesManager.shared.isFavorite(id: movie.id)
     }
     
-    private func loadImage(path: String) {
+    private func loadImage(path: String, for movieId: Int) {
         let baseURL = "https://image.tmdb.org/t/p/w342"
         let fullURL = baseURL + path
         
+        // If the URL is already being loaded for this cell, don't reload it
         if imageUrlString == fullURL { return }
         
+        // Cancel any existing image loading task
         cancelImageLoading()
         
+        // Store the URL we're loading
         imageUrlString = fullURL
         
-        if posterImageView.image == nil {
-            posterImageView.image = UIImage(systemName: "photo")
-            posterImageView.tintColor = .darkGray
-            posterImageView.contentMode = .center
+        // Check if the image is already in cache
+        if let cachedImage = ImageCache.shared.getImageFromCache(urlString: fullURL) {
+            // Use cached image immediately, avoiding any placeholder flashing
+            posterImageView.image = cachedImage
+            posterImageView.contentMode = .scaleAspectFill
+            posterImageView.tintColor = nil
+            return
         }
         
+        // Load the image asynchronously
         imageTask = ImageCache.shared.loadImage(from: fullURL) { [weak self] image in
-            guard let self = self, self.imageUrlString == fullURL else { return }
+            // Make sure we're still showing the same movie
+            guard let self = self, 
+                  self.currentMovieId == movieId,
+                  self.imageUrlString == fullURL else { 
+                return 
+            }
             
             if let image = image {
+                // Avoid UI flashing by not setting placeholder again
                 self.posterImageView.image = image
                 self.posterImageView.contentMode = .scaleAspectFill
                 self.posterImageView.tintColor = nil
-            } else {
-                self.setPlaceholderImage()
             }
         }
     }
@@ -171,6 +202,12 @@ class MovieGridCell: UICollectionViewCell {
         titleLabel.text = nil
         ratingLabel.text = nil
         favoriteIndicator.isHidden = true
+        favoriteAction = nil
+        currentMovieId = 0
+        
+        // Set a plain background color instead of placeholder image to avoid flashing
+        posterImageView.image = nil
+        posterImageView.backgroundColor = .lightGray
         
         cancelImageLoading()
     }

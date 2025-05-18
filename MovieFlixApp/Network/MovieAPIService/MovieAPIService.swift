@@ -9,11 +9,9 @@ import Foundation
 
 class MovieAPIService {
     
-    // MARK: API key from TMDB
     private let apiKey = "19a08dbbbeec24a0fec21f1b53249621"
     private let baseURL = "https://api.themoviedb.org/3"
     
-    // MARK: - Search for films
     func searchMovies(query: String, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let queryEncoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "\(baseURL)/search/movie?api_key=\(apiKey)&query=\(queryEncoded)&language=pt-BR"
@@ -69,7 +67,6 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - Movie Details
     func fetchMovieDetail(id: Int, completion: @escaping (Result<MovieDetail, Error>) -> Void) {
         let urlString = "\(baseURL)/movie/\(id)?api_key=\(apiKey)&language=pt-BR"
         
@@ -128,7 +125,6 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - Search for Popular Films
     func fetchPopularMovies(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let urlString = "\(baseURL)/movie/popular?api_key=\(apiKey)&language=pt-BR&page=\(page)"
         
@@ -192,14 +188,11 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - Search for films Now Playing
     func fetchNowPlayingMovies(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let urlString = "\(baseURL)/movie/now_playing?api_key=\(apiKey)&language=pt-BR&page=\(page)"
         
         fetchMoviesByCategory(urlString: urlString, categoryName: "Now Playing", completion: completion)
     }
-    
-    // MARK: - Search for films Top Rated
     
     func fetchTopRatedMovies(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let urlString = "\(baseURL)/movie/top_rated?api_key=\(apiKey)&language=pt-BR&page=\(page)"
@@ -207,15 +200,11 @@ class MovieAPIService {
         fetchMoviesByCategory(urlString: urlString, categoryName: "Top Rated", completion: completion)
     }
     
-    // MARK: - Search for Upcoming films
-    
     func fetchUpcomingMovies(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let urlString = "\(baseURL)/movie/upcoming?api_key=\(apiKey)&language=pt-BR&page=\(page)"
         
         fetchMoviesByCategory(urlString: urlString, categoryName: "Upcoming", completion: completion)
     }
-    
-    // MARK: - Método utilitário para busca de categorias
     
     private func fetchMoviesByCategory(urlString: String, categoryName: String, completion: @escaping (Result<[Movie], Error>) -> Void) {
         
@@ -279,7 +268,6 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - Search for all films
     func fetchAllMovies(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let urlString = "\(baseURL)/discover/movie?api_key=\(apiKey)&language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=false&page=\(page)"
         
@@ -343,7 +331,6 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - Search for movies from all categories combined
     func fetchMoviesFromAllCategories(page: Int = 1, completion: @escaping (Result<[Movie], Error>) -> Void) {
         var allMovies: [Movie] = []
         let group = DispatchGroup()
@@ -409,7 +396,6 @@ class MovieAPIService {
         }
     }
     
-    // MARK: - API Errors
     enum MovieAPIError: Error, LocalizedError {
         case invalidURL
         case noData
@@ -420,15 +406,15 @@ class MovieAPIService {
         var errorDescription: String? {
             switch self {
             case .invalidURL:
-                return "URL inválida"
+                return "Invalid URL"
             case .noData:
-                return "Nenhum dado recebido"
+                return "No received data"
             case .apiError(let message):
                 return message
             case .unauthorized:
-                return "Chave de API inválida ou não autorizada"
+                return "Invalid or unauthorized API key"
             case .httpError(let statusCode):
-                return "Erro na requisição: \(statusCode)"
+                return "Request error: \(statusCode)"
             }
         }
     }
