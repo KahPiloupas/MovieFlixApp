@@ -32,6 +32,28 @@ struct MovieDetail: Codable {
         case backdropPath = "backdrop_path"
     }
     
+    init(id: Int, 
+         originalTitle: String, 
+         title: String, 
+         overview: String, 
+         releaseDate: String, 
+         voteAverage: Double, 
+         backdropPath: String?, 
+         budget: Int, 
+         revenue: Int, 
+         genres: [Genre]) {
+        self.id = id
+        self.originalTitle = originalTitle
+        self.title = title
+        self.overview = overview
+        self.releaseDate = releaseDate
+        self.voteAverage = voteAverage
+        self.backdropPath = backdropPath
+        self.budget = budget
+        self.revenue = revenue
+        self.genres = genres
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

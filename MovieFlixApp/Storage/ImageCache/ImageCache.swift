@@ -34,6 +34,13 @@ class ImageCache {
         return cache.object(forKey: urlString as NSString)
     }
     
+    #if DEBUG
+    // Helper for testing
+    func setImageInCache(_ image: UIImage, for urlString: String) {
+        cache.setObject(image, forKey: urlString as NSString)
+    }
+    #endif
+    
     func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask? {
         if let cachedImage = cache.object(forKey: urlString as NSString) {
             completion(cachedImage)

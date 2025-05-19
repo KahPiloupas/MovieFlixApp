@@ -144,15 +144,15 @@ class MovieGridCell: UICollectionViewCell {
         if let cachedImage = ImageCache.shared.getImageFromCache(urlString: fullURL) {
             posterImageView.image = cachedImage
             posterImageView.contentMode = .scaleAspectFill
-            posterImageView.tintColor = nil
+            self.posterImageView.tintColor = nil
             return
         }
         
         imageTask = ImageCache.shared.loadImage(from: fullURL) { [weak self] image in
-            guard let self = self, 
-                  self.currentMovieId == movieId,
-                  self.imageUrlString == fullURL else { 
-                return 
+            guard let self = self,
+                    self.currentMovieId == movieId,
+                  self.imageUrlString == fullURL else {
+                return
             }
             
             if let image = image {
@@ -189,5 +189,12 @@ class MovieGridCell: UICollectionViewCell {
         posterImageView.backgroundColor = .lightGray
         
         cancelImageLoading()
+    }
+    
+    // MARK: - Public methods for testing
+    
+    /// Triggers the favorite action callback (used for testing)
+    public func triggerFavoriteAction() {
+        favoriteAction?()
     }
 }

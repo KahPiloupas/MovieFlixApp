@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		20C1D30C2DDAB8A700298686 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20F8332C2DD6C77900C7CE87 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20F833332DD6C77900C7CE87;
+			remoteInfo = MovieFlixApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		20C1D3082DDAB8A700298686 /* MovieFlixAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieFlixAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20F833342DD6C77900C7CE87 /* MovieFlixApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieFlixApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +32,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		20C1D3092DDAB8A700298686 /* MovieFlixAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MovieFlixAppTests;
+			sourceTree = "<group>";
+		};
 		20F833362DD6C77900C7CE87 /* MovieFlixApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		20C1D3052DDAB8A700298686 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F833312DD6C77900C7CE87 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				20F833362DD6C77900C7CE87 /* MovieFlixApp */,
+				20C1D3092DDAB8A700298686 /* MovieFlixAppTests */,
 				20F833352DD6C77900C7CE87 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				20F833342DD6C77900C7CE87 /* MovieFlixApp.app */,
+				20C1D3082DDAB8A700298686 /* MovieFlixAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		20C1D3072DDAB8A700298686 /* MovieFlixAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20C1D3102DDAB8A700298686 /* Build configuration list for PBXNativeTarget "MovieFlixAppTests" */;
+			buildPhases = (
+				20C1D3042DDAB8A700298686 /* Sources */,
+				20C1D3052DDAB8A700298686 /* Frameworks */,
+				20C1D3062DDAB8A700298686 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20C1D30D2DDAB8A700298686 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				20C1D3092DDAB8A700298686 /* MovieFlixAppTests */,
+			);
+			name = MovieFlixAppTests;
+			packageProductDependencies = (
+			);
+			productName = MovieFlixAppTests;
+			productReference = 20C1D3082DDAB8A700298686 /* MovieFlixAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		20F833332DD6C77900C7CE87 /* MovieFlixApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20F833472DD6C77A00C7CE87 /* Build configuration list for PBXNativeTarget "MovieFlixApp" */;
@@ -93,6 +141,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					20C1D3072DDAB8A700298686 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 20F833332DD6C77900C7CE87;
+					};
 					20F833332DD6C77900C7CE87 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -113,11 +165,19 @@
 			projectRoot = "";
 			targets = (
 				20F833332DD6C77900C7CE87 /* MovieFlixApp */,
+				20C1D3072DDAB8A700298686 /* MovieFlixAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		20C1D3062DDAB8A700298686 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F833322DD6C77900C7CE87 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20C1D3042DDAB8A700298686 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F833302DD6C77900C7CE87 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +204,49 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		20C1D30D2DDAB8A700298686 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20F833332DD6C77900C7CE87 /* MovieFlixApp */;
+			targetProxy = 20C1D30C2DDAB8A700298686 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		20C1D30E2DDAB8A700298686 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kpiloupas.MovieFlixAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MovieFlixApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MovieFlixApp";
+			};
+			name = Debug;
+		};
+		20C1D30F2DDAB8A700298686 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kpiloupas.MovieFlixAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MovieFlixApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MovieFlixApp";
+			};
+			name = Release;
+		};
 		20F833482DD6C77A00C7CE87 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -312,6 +421,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		20C1D3102DDAB8A700298686 /* Build configuration list for PBXNativeTarget "MovieFlixAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20C1D30E2DDAB8A700298686 /* Debug */,
+				20C1D30F2DDAB8A700298686 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		20F8332F2DD6C77900C7CE87 /* Build configuration list for PBXProject "MovieFlixApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

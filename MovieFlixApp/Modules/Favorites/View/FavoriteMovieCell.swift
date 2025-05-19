@@ -129,18 +129,21 @@ class FavoriteMovieCell: UITableViewCell {
     }
     
     @objc private func favoriteButtonTapped() {
-        if let action = favoriteAction {
-            action()
+        if let id = movieId {
+            favoriteAction?(id)
         }
     }
     
-    var favoriteAction: (() -> Void)?
+    var movieId: Int?
+    var favoriteAction: ((Int) -> Void)?
     
     func configure(with movie: MovieDetail) {
-        if movie.originalTitle.count > movie.title.count {
-            titleLabel.text = movie.originalTitle
-        } else {
+        movieId = movie.id
+        
+        if movie.originalTitle.count <= movie.title.count {
             titleLabel.text = movie.title
+        } else {
+            titleLabel.text = movie.originalTitle
         }
         
         if !movie.genres.isEmpty {
@@ -221,4 +224,30 @@ class FavoriteMovieCell: UITableViewCell {
         
         cancelImageLoading()
     }
+    
+    // MARK: - Public methods for testing
+    
+    /// Triggers the favorite button action (used for testing)
+    public func triggerFavoriteAction(from view: UIView? = nil) {
+        if let id = movieId {
+            favoriteAction?(id)
+        }
+    }
+    
+    #if DEBUG
+    /// Gets the genre value label text (used for testing)
+    public func getGenreValueLabelText() -> String? {
+        return genreValueLabel.text
+    }
+    
+    /// Gets the title label text (used for testing)
+    public func getTitleLabelText() -> String? {
+        return titleLabel.text
+    }
+    
+    /// Gets the release value label text (used for testing)
+    public func getReleaseValueLabelText() -> String? {
+        return releaseValueLabel.text
+    }
+    #endif
 }

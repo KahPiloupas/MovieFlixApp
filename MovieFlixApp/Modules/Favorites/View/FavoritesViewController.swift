@@ -79,7 +79,7 @@ extension FavoritesViewController: UITableViewDataSource, UITableViewDelegate {
         let movieDetail = movies[indexPath.row]
         cell.configure(with: movieDetail)
         
-        cell.favoriteAction = { [weak self] in
+        cell.favoriteAction = { [weak self] (movieId: Int) in
             self?.presenter.didTapRemove(id: movieDetail.id)
         }
         

@@ -63,6 +63,14 @@ class FavoritesManager {
         
         favorites = Dictionary(uniqueKeysWithValues: movies.map { ($0.id, $0) })
     }
+    
+    // For testing purposes
+    #if DEBUG
+    func clearFavorites() {
+        favorites.removeAll()
+        UserDefaults.standard.removeObject(forKey: favoritesKey)
+    }
+    #endif
 }
 
 extension Notification.Name {

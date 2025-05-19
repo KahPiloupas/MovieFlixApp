@@ -32,6 +32,25 @@ class MovieGridPresenter: MovieGridPresenterProtocol {
     private(set) var isSearching: Bool = false
     private var hasMorePages: Bool = true
     
+    // MARK: - Testing Helper Methods
+#if DEBUG
+    func setCurrentPage(_ page: Int) {
+        currentPage = page
+    }
+    
+    func setIsLoadingMore(_ loading: Bool) {
+        isLoadingMore = loading
+    }
+    
+    func setIsSearching(_ searching: Bool) {
+        isSearching = searching
+    }
+    
+    func setCurrentCategory(_ category: MovieCategory) {
+        currentCategory = category
+    }
+#endif
+    
     func viewDidLoad() {
         view?.showLoading(true)
         fetchMovieCategory(.all)
@@ -40,6 +59,7 @@ class MovieGridPresenter: MovieGridPresenterProtocol {
     func refreshData() {
         view?.showLoading(true)
         currentPage = 1
+        isLoadingMore = false
         hasMorePages = true
         fetchMovieCategoryWithPage(currentCategory, page: currentPage)
     }

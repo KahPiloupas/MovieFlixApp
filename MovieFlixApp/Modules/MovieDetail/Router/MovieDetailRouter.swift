@@ -7,9 +7,10 @@
 
 import UIKit
 
-protocol MovieDetailRouterProtocol {}
-
 class MovieDetailRouter: MovieDetailRouterProtocol {
+    
+    func navigateBack() {}
+    
     static func createModule(with movieId: Int) -> UIViewController {
         let view = MovieDetailViewController()
         let presenter = MovieDetailPresenter(movieId: movieId)

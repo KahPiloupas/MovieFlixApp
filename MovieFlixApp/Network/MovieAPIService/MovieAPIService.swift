@@ -12,6 +12,17 @@ class MovieAPIService {
     private let apiKey = "19a08dbbbeec24a0fec21f1b53249621"
     private let baseURL = "https://api.themoviedb.org/3"
     
+    // MARK: - Testing Helper Methods
+#if DEBUG
+    func getApiKey() -> String {
+        return apiKey
+    }
+    
+    func getBaseURL() -> String {
+        return baseURL
+    }
+#endif
+    
     func searchMovies(query: String, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let queryEncoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "\(baseURL)/search/movie?api_key=\(apiKey)&query=\(queryEncoded)&language=pt-BR"
