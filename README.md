@@ -1,30 +1,67 @@
-# MovieFlix App
+# MovieFlixApp
 
-Um aplicativo iOS para buscar, visualizar detalhes e favoritar filmes usando a API TMDB.
+Um aplicativo iOS para explorar e gerenciar seus filmes favoritos usando a API do The Movie Database (TMDb).
 
-## Funcionalidades
+## 📱 Funcionalidades
 
 - Busca de filmes por nome
-- Listagem de resultados com poster, título e avaliação
-- Visualização detalhada com: título, título original, sinopse, avaliação, orçamento, receita, data de lançamento
-- Sistema de favoritos com armazenamento local
-- Visualização e gerenciamento de favoritos
+- Visualização de detalhes dos filmes
+- Sistema de favoritos
+- Interface em grid para listagem de filmes
+- Cache de imagens
+- Suporte offline para filmes favoritos
+- Feedback visual para ações do usuário
 
-## Tecnologias utilizadas
+## 📄 Requisitos
 
-- Swift 5
-- UIKit
-- Arquitetura VIPER
-- UserDefaults para persistência local
-- Grand Central Dispatch (GCD) para concorrência
-- API TMDB (The Movie Database)
+- iOS 13.0+
+- Xcode 12.0+
+- Swift 5.0+
+- Conta no The Movie Database (TMDb) para API Key
 
-## Instalação
+## 📦 Instalação
 
-1. Clone o repositório
-2. Abra o arquivo `MovieFlixApp.xcodeproj` no Xcode
-3. Selecione um simulador ou dispositivo físico
-4. Execute o projeto (⌘+R)
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/MovieFlixApp.git
+```
+
+2. Navegue até o diretório do projeto:
+```bash
+cd MovieFlixApp
+```
+
+3. Abra o arquivo do projeto no Xcode:
+```bash
+open MovieFlixApp.xcodeproj
+```
+
+4. Configure sua API Key do TMDb:
+   - Acesse [The Movie Database](https://www.themoviedb.org/)
+   - Crie uma conta ou faça login
+   - Vá para as configurações da sua conta
+   - Na seção "API", gere uma nova API Key
+   - No projeto, localize o arquivo `MovieAPIService.swift`
+   - Substitua `YOUR_API_KEY` pela sua API Key
+
+## 🚀 Execução
+
+1. No Xcode, selecione um simulador iOS ou dispositivo físico
+
+2. Pressione `⌘R` ou clique no botão de "Play" para executar o aplicativo
+
+3. Aguarde o aplicativo compilar e iniciar
+
+## 🧪 Testes
+
+Para executar os testes unitários:
+
+1. No Xcode, pressione `⌘U` ou
+2. Vá em `Product > Test` no menu superior
+
+## 📁 Estrutura do Projeto
+
+O projeto segue a arquitetura VIPER:
 
 ## Arquitetura
 
