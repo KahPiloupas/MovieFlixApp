@@ -91,7 +91,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
             target: self,
             action: #selector(toggleFavorite)
         )
-        favoriteButton.tintColor = .systemRed
+        favoriteButton.tintColor = .systemGray 
         
         navigationItem.rightBarButtonItems = [favoriteButton]
     }
@@ -282,6 +282,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
     
     @objc private func toggleFavorite() {
         guard let movie = currentMovie else { return }
+        
         presenter.toggleFavorite(movie)
         
         let isFavorite = FavoritesManager.shared.isFavorite(id: movie.id)
@@ -446,13 +447,16 @@ class MovieDetailViewController: UIViewController, MovieDetailViewProtocol {
             genresValueLabel.text = "Not available"
         }
         
-        let isFavorite = FavoritesManager.shared.isFavorite(id: detail.id)
-        if let favoriteButton = navigationItem.rightBarButtonItems?[0] {
-            favoriteButton.tintColor = isFavorite ? .systemRed : .systemGray
-        }
-        
         loadBackdropImage(path: detail.backdropPath)
         loadPosterImage(path: detail.backdropPath)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let isFavorite = FavoritesManager.shared.isFavorite(id: detail.id)
+            if let favoriteButton = self.navigationItem.rightBarButtonItems?[0] {
+                favoriteButton.tintColor = isFavorite ? .systemRed : .systemGray
+            }
+        }
     }
     
     func displayError(_ message: String) {
